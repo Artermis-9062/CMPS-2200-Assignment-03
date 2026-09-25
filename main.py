@@ -42,12 +42,12 @@ def iterate(f, x, a):
 # return True or False
 def rsearch(L, x):
     ###TODO
-    def comparison(element, current_state):
+    def comparison(left, right):
         # If we already found it, keep returning True
-        if current_state == True:
+        if left is True or right is True:
             return True
         # Otherwise, check if the current element matches the target `x`
-        return element == x
+        return left == x or right == x
     
     # Start with False
     currState = reduce(comparison, False, L)
