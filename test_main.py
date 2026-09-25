@@ -5,6 +5,8 @@ from main import *
 def test_isearch():
     assert isearch([1, 3, 5, 4, 2, 9, 7], 2) == (2 in [1, 3, 5, 4, 2, 9, 7])
     assert isearch([1, 3, 5, 2, 9, 7], 7) == (7 in [1, 3, 5, 2, 9, 7])
+    assert isearch([1, 3, 5, 6, 4, 2], 7) == (7 in [1, 3, 5, 6, 4, 2])
+    assert isearch([1, 3, 5, 2, 4, 9, 7], 2) == (2 in [1, 3, 5, 2, 4, 9, 7])
 
 # 2 pts
 def test_isearch2():

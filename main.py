@@ -1,4 +1,6 @@
 # assignment-03
+# Name: Chuong Hoang Pham
+
 
 # no other imports needed
 from collections import defaultdict
@@ -11,7 +13,23 @@ import math
 # return True or False
 def isearch(L, x):
     ###TODO
-    pass
+    # Method 1:
+    # init_v = [x, 0]
+    # ans = iterate(comparison, init_v, L) 
+    # return ans[1] > 0
+
+    # Method 2:
+    def comparison(current_state, element):
+        # If we already found it, keep returning True
+        if current_state == True:
+            return True
+        # Otherwise, check if the current element matches the target `x`
+        return element == x
+    
+    # Start with False (meaning "not found yet")
+    currState = iterate(comparison, False, L)
+    return currState
+
 
 def iterate(f, x, a):
     # done. do not change me.
@@ -24,7 +42,16 @@ def iterate(f, x, a):
 # return True or False
 def rsearch(L, x):
     ###TODO
-    pass
+    def comparison(current_state, element):
+        # If we already found it, keep returning True
+        if current_state == True:
+            return True
+        # Otherwise, check if the current element matches the target `x`
+        return element == x
+    
+    # Start with False
+    currState = reduce(comparison, False, L)
+    return currState
 
 def reduce(f, id_, a):
     print(a)
@@ -100,7 +127,23 @@ def dedup(a, b):
     [1,2,3,4,5]
     """
     ###TODO
-    pass
+    i, j = 0, 0
+    res = []
+    while i < len(a) or j < len(b):
+        val_a = a[i] if i < len(a) else float("inf")
+        val_b = b[j] if j < len(b) else float("inf")
+
+        if val_a < val_b:
+            res.append(val_a)
+            i += 1
+        elif val_a > val_b:
+            res.append(val_b)
+            j += 1
+        else: # val_a == val_b
+            res.append(val_a)
+            i += 1
+            j += 1
+    return res
     
 def doc_index_reduce(group):
     """
@@ -116,7 +159,8 @@ def doc_index_reduce(group):
     ('is', [0,1,2])
     """
     ### TODO fix this line
-    return (group[0], group[1])
+    list_id = [[ele] for ele in group[1]]
+    return (group[0], reduce(dedup, [], list_id))
 
 def collect(pairs):
     """
@@ -162,8 +206,10 @@ def parens_match_iterative(mylist):
     False
     """
     ### TODO
-    pass
-
+    ans = iterate(parens_update, 0, mylist)
+    if ans == 0:
+        return True
+    return False
 
 def parens_update(current_output, next_input):
     """
@@ -178,7 +224,14 @@ def parens_update(current_output, next_input):
       the updated value of `current_output`
     """
     ###TODO
-    pass
+    if current_output == 0 and next_input == ')':
+        return -float('inf')
+    if next_input == '(':
+        return current_output + 1
+    elif next_input == ')':
+        return current_output - 1
+    else:
+        return current_output
 
 #### Scan solution
 
@@ -200,7 +253,12 @@ def parens_match_scan(mylist):
     
     """
     ###TODO
-    pass
+    map_mylist = list(map(paren_map, mylist))
+    res = scan(plus, 0, map_mylist)
+    lowest_drop = reduce(min_f, 0, res[0])
+    if res[1] == 0 and lowest_drop >= 0:
+        return True
+    return False
 
 def scan(f, id_, a):
     """
@@ -268,5 +326,30 @@ def parens_match_dc_helper(mylist):
       parens_match_dc to return the final True or False value
     """
     ###TODO
-    pass
+    if len(mylist) == 0:
+        return (0,0)
+    elif len(mylist) == 1:
+        if mylist[0] == '(':
+            return (0, 1)
+        elif mylist[0] == ')':
+            return (1, 0)
+        else:
+            return (0, 0)
+
+
+    # Merging it
+    left = parens_match_dc_helper(mylist[:len(mylist)//2])
+    right = parens_match_dc_helper(mylist[len(mylist)//2:])
+
+    # Tracking left, right
+    print(left, right)
     
+    # Setup
+    left_unmatched_left, left_unmatched_right = left[1], left[0]  # (R, L)
+    right_unmatched_left, right_unmatched_right = right[1], right[0] # (R, L)
+
+    # Merging rule:
+    if left_unmatched_left == right_unmatched_right:
+        return (left_unmatched_right, right_unmatched_left)
+    else:
+        return (left_unmatched_right + right_unmatched_right, left_unmatched_left + right_unmatched_left)
