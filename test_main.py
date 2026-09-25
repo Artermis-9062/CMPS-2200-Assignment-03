@@ -21,7 +21,7 @@ def test_rsearch():
 # 2 pts
 def test_rsearch2():
     assert rsearch([1, 3, 5, 2, 9, 7], 99) == (99 in [1, 3, 5, 2, 9, 7])
-    #assert rsearch([], 2) == (2 in [1, 3, 5])
+    assert rsearch([], 2) == (2 in [])
 
 # 2 pts
 def test_dedup():

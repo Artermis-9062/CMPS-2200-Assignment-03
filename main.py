@@ -42,7 +42,7 @@ def iterate(f, x, a):
 # return True or False
 def rsearch(L, x):
     ###TODO
-    def comparison(current_state, element):
+    def comparison(element, current_state):
         # If we already found it, keep returning True
         if current_state == True:
             return True
@@ -353,3 +353,5 @@ def parens_match_dc_helper(mylist):
         return (left_unmatched_right, right_unmatched_left)
     else:
         return (left_unmatched_right + right_unmatched_right, left_unmatched_left + right_unmatched_left)
+
+print(rsearch([1, 3, 5], 99))
